@@ -1,0 +1,26 @@
+html, 
+body, 
+#background { 
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #e8e8e8;
+}
+
+.product-card-link {
+	text-decoration: none !important;
+	color: #000000;
+
+	.card {
+	  transition: box-shadow .3s;
+	}
+	.card:hover {
+	  box-shadow: 0 0 11px rgba(33,33,33,.5); 
+	}
+}
+
+#cart-btn {
+	.cart-qty {
+		font-weight: 800;
+		margin-bottom: 0;
+	}
+}
