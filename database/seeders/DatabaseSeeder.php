@@ -49,8 +49,7 @@ class DatabaseSeeder extends Seeder
                 'quantity' => '6',
                 'enable' => true
             ],
-        ]
-        );
+        ]);
 
 
         DB::table('users')->insert([
@@ -59,18 +58,6 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@admin.com',
                 'password' => 'psswd'
             ]
-        ]
-        );
-
-
-        DB::table('carts')->insert([
-            [
-                'total_price' => '10000.00',
-                'items' => '{}',
-                'active' => true,
-                'customer_id' => '1',
-            ]
-        ]
-        );
+        ]);
     }
 }

@@ -6,6 +6,16 @@ body,
   background-color: #e8e8e8;
 }
 
+.container {
+	.row {
+		.cart-container,
+		.order-summary-container,
+		.checkout-form-container {
+			background-color: #FFFFFF;
+		}
+	}
+}
+
 .product-card-link {
 	text-decoration: none !important;
 	color: #000000;

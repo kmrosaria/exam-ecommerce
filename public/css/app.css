@@ -10010,6 +10010,12 @@ body,
   background-color: #e8e8e8;
 }
 
+.container .row .cart-container,
+.container .row .order-summary-container,
+.container .row .checkout-form-container {
+  background-color: #FFFFFF;
+}
+
 .product-card-link {
   text-decoration: none !important;
   color: #000000;

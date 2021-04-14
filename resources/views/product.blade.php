@@ -10,15 +10,36 @@
             <h2 class="card-title">{{ __($product->name) }}</h2>
             <p class="card-text">{{ ucfirst($product->description) }}</p>
 
-            <h3> ₱{{ __($product->price) }}<h3>
-            <p>{{ __($product->quantity) }}</p>
+            <h3> ₱{{ __($product->price) }}</h3>
+            <div class="container py-4">
+              <div class="row">
+                  <label class="text-center col-sm-3">Quantity</label>
+                  <div class="col-sm-4">
+                      <div class="input-group">
+                          <span class="input-group-prepend">
+                              <button type="button" class="btn btn-outline-secondary btn-number" disabled="disabled" data-type="minus" data-field="quant[{{ __($product->uuid) }}]">
+                                  -
+                              </button>
+                          </span>
+                          <input type="text" name="quant[{{ __($product->uuid) }}]" class="form-control input-number" value="1" min="1" max="{{ __($product->quantity) }}" id="item-quantity">
+                          <span class="input-group-append">
+                              <button type="button" class="btn btn-outline-secondary btn-number" data-type="plus" data-field="quant[{{ __($product->uuid) }}]">
+                                  +
+                              </button>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <p></p>
+
+            <div class="alert alert-danger d-none response-msg" role="alert"></div>
             <div class="row">
-              <button type="button" class="btn btn-primary col mx-1" id="buy-now-btn" data-product-uuid="{{ __($product->uuid) }}">Buy Now</button>
-              <button type="button" class="btn btn-secondary col mx-1" id="add-to-cart-btn" data-product-uuid="{{ __($product->uuid) }}">Add to Cart</button>
+              <button type="button" class="btn btn-primary col mx-1 add-to-cart" id="buy-now-btn" data-product-uuid="{{ __($product->uuid) }}" data-redirect="{{ url('/cart/1') }}" data-field="quant[{{ __($product->uuid) }}]">Buy Now</button>
+              <button type="button" class="btn btn-secondary col mx-1 add-to-cart" id="add-to-cart-btn" data-product-uuid="{{ __($product->uuid) }}" data-field="quant[{{ __($product->uuid) }}]">Add to Cart</button>
             </div>
           </div>
         </div> 
-        
       </div>
     </div>
 </div>

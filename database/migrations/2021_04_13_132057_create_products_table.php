@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('quantity');
             $table->boolean('enable');
+            $table->timestamps();
         });
     }
 

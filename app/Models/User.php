@@ -42,10 +42,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the user's current cart .
+     * Get the user's cart .
      */
     public function cart()
     {
         return $this->hasMany(Carts::class, 'customer_id');
+    }
+
+    /**
+     * Get the user's order .
+     */
+    public function order()
+    {
+        return $this->hasMany(Orders::class, 'customer_id');
     }
 }

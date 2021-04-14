@@ -15,9 +15,7 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total_price', 10, 2);
             $table->string('items');
-            $table->string('code')->nullable();
             $table->boolean('active');
             $table->bigInteger('customer_id')->unsigned()->index();
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
