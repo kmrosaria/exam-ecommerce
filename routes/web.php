@@ -29,5 +29,7 @@ Route::get('orders/{id}/', [MyController::class, 'getOrdersByUser']);
 
 
 Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'getAllOrders']);
     Route::get('/orders', [AdminController::class, 'getAllOrders']);
+    Route::get('/products', [AdminController::class, 'getAllProducts']);
 });

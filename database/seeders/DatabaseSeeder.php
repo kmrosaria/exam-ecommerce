@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
                 'uuid' => 'monitor-1',
                 'description' => '144hz Monitor',
                 'price' => '11000.00',
-                'quantity' => '6',
+                'quantity' => '3',
                 'enable' => true
             ],
             [
@@ -38,15 +38,31 @@ class DatabaseSeeder extends Seeder
                 'uuid' => 'mouse-1',
                 'description' => '1up to 16k dpi rgb mouse',
                 'price' => '2500.00',
-                'quantity' => '6',
+                'quantity' => '15',
                 'enable' => true
             ],
             [
                 'name' => 'Headset',
                 'uuid' => 'headset-1',
-                'description' => 'Noise cancelling headset',
+                'description' => 'Headset with noise cancellation and RGB Lighting',
                 'price' => '4500.00',
-                'quantity' => '6',
+                'quantity' => '8',
+                'enable' => true
+            ],
+            [
+                'name' => 'Earphone',
+                'uuid' => 'earphone-1',
+                'description' => 'Earphone with noise cancellation',
+                'price' => '1500.00',
+                'quantity' => '10',
+                'enable' => true
+            ],
+            [
+                'name' => 'Mousepad',
+                'uuid' => 'mousepad-1',
+                'description' => 'S/M/L/XL/XXL size mousepad',
+                'price' => '500.00',
+                'quantity' => '20',
                 'enable' => true
             ],
         ]);
