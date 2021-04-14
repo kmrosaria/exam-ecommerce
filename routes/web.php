@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MyController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,12 @@ Route::get('/product/{uuid}', [MyController::class, 'getProductById']);
 
 Route::prefix('cart')->group(function () {
     Route::get('/{id}', [MyController::class, 'getCartByUser']);
+});
+
+Route::get('checkout/{id}/', [MyController::class, 'checkoutCart']);
+Route::get('orders/{id}/', [MyController::class, 'getOrdersByUser']);
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/orders', [AdminController::class, 'getAllOrders']);
 });

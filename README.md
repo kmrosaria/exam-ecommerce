@@ -1,62 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Install LEMP Stack on Ubuntu 20.04
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. Install Nginx Web Server
+ - run `sudo apt update`
+ - then install `sudo apt install nginx`
+ - check ufw app list `sudo ufw app list`
+ - allow Nginx HTTP `sudo ufw allow 'Nginx HTTP'`
+ - check ufw status if **Nginx HTTP** is active if return is inactive try running `sudo ufw enable` then check status again
+ - goto browser type **localhost** or your **IP address**
 
-## About Laravel
+2. Install MySQL Database
+ - run `sudo apt install mysql-server`
+ - then `sudo mysql_secure_installation`
+ - after the installation run `sudo mysql` to check if already working
+ - create your database `CREATE DATABASE <db_name>;`
+ - create a user `CREATE USER '<username>'@'%' IDENTIFIED WITH mysql_native_password BY '<passwd>';`
+ - grant db access to that user `GRANT ALL ON <db_name>.* TO '<username>'@'%';`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+3. Install PHP
+ - run 'sudo apt install php-fpm php-mysql'
+ - install required packages 'sudo apt install php-mbstring php-xml php-bcmath'
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+4. Setting up your local
+ - goto /var/www 'cd /var/www'
+ - clone this repo `https://github.com/kmrosaria/exam-ecommerce.git`
+ - create director for your repo 'sudo mkdir /var/www/<ur_domain>'
+ - assign ownership of the directory with the $USER environment variable 'sudo chown -R $USER:$USER /var/www/<ur_domain>'
+ - give web server access to `storage` and `cache` 
+   - `sudo chown -R www-data.www-data /var/www/<repo>/storage`
+   - `sudo chown -R www-data.www-data /var/www/<repo>/bootstrap/cache`
 
-## Learning Laravel
+ - create a new config file on Nginx's sites-available directory `sudo nano /etc/nginx/sites-available/<ur_domain>`
+    ```
+    server {
+        listen 80;
+        server_name server_domain_or_IP;
+        root /var/www/<repo>/public;
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-Content-Type-Options "nosniff";
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+        index index.html index.htm index.php;
 
-## Laravel Sponsors
+        charset utf-8;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
 
-### Premium Partners
+        location = /favicon.ico { access_log off; log_not_found off; }
+        location = /robots.txt  { access_log off; log_not_found off; }
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+        error_page 404 /index.php;
 
-## Contributing
+        location ~ \.php$ {
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        location ~ /\.(?!well-known).* {
+            deny all;
+        }
+    }
+    ```
+ - link your configuration to nginx's sites-enabled directory `sudo ln -s /etc/nginx/sites-available/<ur_domain>/etc/nginx/sites-enabled/`
+ - then unlink the default config file from nginx's site-enabled `sudo unlink /etc/nginx/sites-enabled/default`
+ - then test your configuration `sudo nginx -t`
+ - then reload nginx sudo systemctl reload nginx
+ - then open /etc/hosts via vi/vim/nano and add `127.0.0.1   <ur_domain>`
+ - visit http://<ur_domain> on your browser
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+If you want a more detailed tutorial. Go to this [link!](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-laravel-with-nginx-on-ubuntu-20-04)
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### For APIs
+ - GET Method
+ 	- `/api/products/` Get all products.
+ 	- `/api/products/{product_id}` Get product details
+ 	- `/api/orders/all` Get all orders
+ 	- `/api/orders/{user_id}` Get all user orders
+ 	- `/api/cart/{user_id}` Get user's current cart
+ - POST Method
+ 	- `/api/cart/add`
+ 		- Payload
+ 			```
+ 				{
+		            uuid: {product_id},
+		            userid: {user_id},
+		            quantity: {quantity}
+		        }
+ 			```
+ 	- `/api/cart/update`
+ 		- Payload
+ 			```
+ 				{
+		            uuid: {product_id},
+		            userid: {user_id},
+		            quantity: {quantity}
+		        }
+ 			```
+ 	- `/api/cart/remove`
+ 		- Payload
+ 			```
+ 				{
+		            uuid: {product_id},
+		            userid: {user_id},
+		        }
+ 			```
